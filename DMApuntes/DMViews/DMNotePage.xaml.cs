@@ -8,8 +8,14 @@ public partial class DMNotePage : ContentPage
     {
         InitializeComponent();
 
-        if (File.Exists(_fileName))
-            TextEditor.Text = File.ReadAllText(_fileName);
+        // Generate a random file name.
+        string appDataPath = FileSystem.AppDataDirectory;
+        string randomFileName = $"{Path.GetRandomFileName()}.notes.txt";
+
+        _fileName = Path.Combine(appDataPath, randomFileName);
+
+        // Load the note with the generated file name.
+        LoadNote(_fileName);
     }
 
     private void SaveButton_Clicked(object sender, EventArgs e)
