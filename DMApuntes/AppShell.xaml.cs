@@ -7,6 +7,7 @@ namespace DMApuntes
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(DMViews.DMNotePage), typeof(DMViews.DMNotePage));
         }
     }
 }
