@@ -26,4 +26,18 @@ public partial class DMNotePage : ContentPage
 
         TextEditor.Text = string.Empty;
     }
+
+    private void LoadNote(string fileName)
+    {
+        DMModels.DMNote noteModel = new DMModels.DMNote();
+        noteModel.Filename = fileName;
+
+        if (File.Exists(fileName))
+        {
+            noteModel.Date = File.GetCreationTime(fileName);
+            noteModel.Text = File.ReadAllText(fileName);
+        }
+
+        BindingContext = noteModel;
+    }
 }
