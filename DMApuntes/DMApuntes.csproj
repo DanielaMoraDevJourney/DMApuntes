@@ -70,10 +70,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="DMModels\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <MauiXaml Update="DMViews\DMAboutPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
