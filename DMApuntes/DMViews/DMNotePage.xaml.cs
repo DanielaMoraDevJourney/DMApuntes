@@ -1,49 +1,52 @@
-namespace DMApuntes.DMViews;
-
-public partial class DMNotePage : ContentPage
+namespace DMApuntes.DMViews
 {
-    string _fileName = Path.Combine(FileSystem.AppDataDirectory, "notes.txt");
-
-    public DMNotePage()
+    [QueryProperty(nameof(ItemId), nameof(ItemId))]
+    public partial class DMNotePage : ContentPage
     {
-        InitializeComponent();
-
-        // Generate a random file name.
-        string appDataPath = FileSystem.AppDataDirectory;
-        string randomFileName = $"{Path.GetRandomFileName()}.notes.txt";
-
-        _fileName = Path.Combine(appDataPath, randomFileName);
-
-        // Load the note with the generated file name.
-        LoadNote(_fileName);
-    }
-
-    private void SaveButton_Clicked(object sender, EventArgs e)
-    {
-        // Save the file.
-        File.WriteAllText(_fileName, TextEditor.Text);
-    }
-
-    private void DeleteButton_Clicked(object sender, EventArgs e)
-    {
-        // Delete the file.
-        if (File.Exists(_fileName))
-            File.Delete(_fileName);
-
-        TextEditor.Text = string.Empty;
-    }
-
-    private void LoadNote(string fileName)
-    {
-        DMModels.DMNote noteModel = new DMModels.DMNote();
-        noteModel.Filename = fileName;
-
-        if (File.Exists(fileName))
+        public string ItemId
         {
-            noteModel.Date = File.GetCreationTime(fileName);
-            noteModel.Text = File.ReadAllText(fileName);
+            set { LoadNote(value); }
         }
 
-        BindingContext = noteModel;
+        public DMNotePage()
+        {
+            InitializeComponent();
+        }
+
+        private async void SaveButton_Clicked(object sender, EventArgs e)
+        {
+            if (BindingContext is DMModels.DMNote note)
+                File.WriteAllText(note.Filename, TextEditor.Text);
+
+            await Shell.Current.GoToAsync("..");
+        }
+
+        private async void DeleteButton_Clicked(object sender, EventArgs e)
+        {
+            if (BindingContext is DMModels.DMNote note)
+            {
+                // Delete the file.
+                if (File.Exists(note.Filename))
+                    File.Delete(note.Filename);
+            }
+
+            await Shell.Current.GoToAsync("..");
+        }
+
+        private void LoadNote(string fileName)
+        {
+            DMModels.DMNote noteModel = new DMModels.DMNote
+            {
+                Filename = fileName
+            };
+
+            if (File.Exists(fileName))
+            {
+                noteModel.Date = File.GetCreationTime(fileName);
+                noteModel.Text = File.ReadAllText(fileName);
+            }
+
+            BindingContext = noteModel;
+        }
     }
 }

@@ -4,8 +4,9 @@
              xmlns:models="clr-namespace:DMApuntes.DMModels"
              x:Class="DMApuntes.DMViews.DMAboutPage"
              Title="DMAboutPage">
+    
     <ContentPage.BindingContext>
-        <models:About />
+        <models:DMAbout />
     </ContentPage.BindingContext>
     <VerticalStackLayout Spacing="10" Margin="10">
         <HorizontalStackLayout Spacing="10">
